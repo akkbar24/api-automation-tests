@@ -2,11 +2,9 @@ name: Python CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   test:
@@ -26,6 +24,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set up environment file
+        run: |
+          echo "${{ secrets.ENV_FILE_CONTENT }}" > .env
+
       - name: Run tests
         run: |
-          pytest --maxfail=3 --disable-warnings --alluredir=allure-results
+          pytest tests/ --maxfail=3 --disable-warnings --junitxml=reports/test-results.xml
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: pytest-report
+          path: reports/test-results.xml
