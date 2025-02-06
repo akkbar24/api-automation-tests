@@ -1,0 +1,12 @@
+requests
+pytest
+python-dotenv
+
+
+# Reporting dependencies
+pytest-html==4.0.0
+allure-pytest==2.13.2
+
+pytest-mock
+
+pytest-cov
